@@ -1,29 +1,25 @@
 import React, {createContext, useContext, useEffect, useState} from 'react'
-import { digestMessage } from "../utils/crypto/hashing.js";
-import {useJsonApi} from "./JsonApiContext.jsx";
-import {useStatus} from "./StatusProvider.jsx";
+import {useJsonApi} from "/src/contexts/JsonApiContext.jsx";
+import {useStatus} from "/src/contexts/StatusProvider.jsx";
+
+import { API_ROUTES } from "/src/utils/apiRoutes/ApiRoutes.js"
+import ForbiddenComponent from "../pages/ForbiddenComponent.jsx";
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({children}) {
     const [user, setUser] = useState(null);
     const {request} = useJsonApi()
-    const {setNewStatus} = useStatus()
+    const {setNewStatus, isUnauthorized, isForbidden} = useStatus()
     const [loading, setLoading] = useState(true);
 
     const login = async userData => {
         setLoading(true);
-        const usersList = await request("GET", `/users?username=${userData.username}`);
-        const user = usersList.find(user => user.username === userData.username);
 
-        const passwordHash = await digestMessage(userData.password);
 
-        if(passwordHash !== user?.password) {
-            setNewStatus("Incorrect username or password.", "error")
-            return;
-        }
+        const res = await request("POST", API_ROUTES.AUTH.LOGIN, userData);
+        localStorage.setItem("user", JSON.stringify(res.token));
 
-        localStorage.setItem("user", JSON.stringify(user));
         setNewStatus("Successfully logged in.", "success");
         setUser(user)
         setLoading(false);
@@ -35,7 +31,20 @@ export function AuthProvider({children}) {
             console.log(JSON.parse(localStorage.getItem("user")))
         }
         setLoading(false)
+
+        console.log(JSON.parse(localStorage.getItem("user")))
     }, []);
+
+    useEffect(() => {
+        if(!isUnauthorized) return;
+        setNewStatus("Session expired. Please login again.", "error");
+        //logout();
+    }, [isUnauthorized])
+
+    useEffect(() => {
+        if(!isForbidden) return;
+        setNewStatus("Cant access this page.", "error");
+    }, [isForbidden])
 
     const logout = () => {
         localStorage.removeItem("user")
@@ -44,25 +53,17 @@ export function AuthProvider({children}) {
 
     const register = async userData => {
         setLoading(true);
-        const usersList = await request("GET", `/users?username=${userData.username}`);
-        const user = usersList.find(user => user.username === userData.username)
 
-        if(user) {
-            setNewStatus("User already exists. Cant register", "error")
-            return;
-        }
+        const res = await request("POST", API_ROUTES.AUTH.REGISTER, userData);
+        localStorage.setItem("user", JSON.stringify(res.token));
 
-        const passwordHash = await digestMessage(userData.password)
-        const data = {username: userData.username, password: passwordHash}
-
-        await request("POST", `/users`, data);
         setNewStatus("Successfully registered.", "success");
         setLoading(false);
     }
 
     return (
         <AuthContext.Provider value={{user, login, logout, register, loading}}>
-            {children}
+            { !isForbidden ? children : <ForbiddenComponent/>}
         </AuthContext.Provider>
     )
 }

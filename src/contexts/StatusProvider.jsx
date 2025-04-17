@@ -6,6 +6,8 @@ const StatusContext = createContext();
 export const StatusProvider = ({ children }) => {
     const [status, setStatus] = useState(null);
     const [type, setType] = useState("");
+    const [isForbidden, setIsForbidden] = useState(false);
+    const [isUnauthorized, setIsUnauthorized] = useState(false);
 
     const setNewStatus = (newStatus, newType) => {
         if(newType !== "success" &&
@@ -29,7 +31,7 @@ export const StatusProvider = ({ children }) => {
     }
 
     return (
-        <StatusContext.Provider value={{ setNewStatus }}>
+        <StatusContext.Provider value={{ setNewStatus, isForbidden, setIsForbidden, isUnauthorized, setIsUnauthorized }}>
             {children}
             {status && (
                 <ToastNotification text={status} type={type} onClose={onClose}></ToastNotification>

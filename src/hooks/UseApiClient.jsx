@@ -2,7 +2,7 @@ import axios from "axios";
 import {useStatus} from "/src/contexts/StatusProvider.jsx";
 
 function UseApiClient(baseURL) {
-    const { setNewStatus } = useStatus();
+    const { setNewStatus, setIsForbidden, setIsUnauthorized } = useStatus();
 
     const axiosInstance = axios.create({
         baseURL: baseURL,
@@ -12,11 +12,23 @@ function UseApiClient(baseURL) {
     })
 
     axiosInstance.interceptors.response.use(
-        response => response,
+        response => {
+            setIsForbidden(false)
+            setIsUnauthorized(false)
+            return response
+        },
         error => {
             console.log(error)
             if (error.response) {
-                setNewStatus(error.response.data.message || "Something went wrong.", "error");
+                const status = error.response.status;
+
+                if (status === 401) {
+                    setNewStatus("Session expired. Please login again.", "error");
+                    setIsUnauthorized(true)
+                }
+                if(status === 403) {
+                    setIsForbidden(true)
+                }
             } else if (error.request) {
                 setNewStatus("Network error, please try again.", "error");
             } else if(error.status != 404) {
@@ -26,10 +38,27 @@ function UseApiClient(baseURL) {
         }
     );
 
-    const request = async (method, url, data = null) => {
-        const response = await axiosInstance({method, url, data})
-        return response.data
+    const request = async (method, url, data = null, token = null) => {
+        // Set up headers
+        const headers = token ? {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+        } : { 'Content-Type': 'application/json' };
+
+        // Log the URL (for debugging)
+        console.log(url);
+
+        // Perform the request with optional token
+        const response = await axiosInstance({
+            method,
+            url,
+            data,
+            headers
+        });
+
+        return response.data;
     }
+
 
     return { request }
 }

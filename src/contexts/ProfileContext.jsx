@@ -1,14 +1,13 @@
 import React, {createContext, useContext} from 'react'
-import {useJsonApi} from "./JsonApiContext.jsx";
-import {useAuth} from "./AuthContext.jsx";
-import {useStatus} from "./StatusProvider.jsx";
-import {useDummyApi} from "./DummyApiContext.jsx";
+import {useJsonApi} from "/src/contexts/JsonApiContext.jsx";
+import {useAuth} from "/src/contexts/AuthContext.jsx";
+import {useStatus} from "/src/contexts/StatusProvider.jsx";
 
 const ProfileContext = createContext(null)
 
 function ProfileProvider({children}) {
     const {request} = useJsonApi()
-    const { request: dummyApiRequest } = useDummyApi();
+    const { request: dummyApiRequest } = useJsonApi();
     const {user} = useAuth()
     const {setNewStatus} = useStatus()
 
