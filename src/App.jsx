@@ -7,6 +7,8 @@ import "/src/tailwindcss.css"
 import ProductList from "./pages/ProductList.jsx";
 import ProductDetail from "/src/pages/ProductDetail.jsx";
 import Cart from "./pages/Cart.jsx";
+import Profile from "./pages/Profile.jsx";
+import Orders from "./pages/Orders.jsx";
 
 function App() {
 
@@ -38,6 +40,16 @@ function App() {
           <Route path={"/cart"}
                  element={<ProtectedRoute allowAuthenticated={true}>
                      <Cart/>
+                 </ProtectedRoute>}>
+          </Route>
+          <Route path={"/profile"}
+                 element={<ProtectedRoute allowAuthenticated={true}>
+                     <Profile/>
+                 </ProtectedRoute>}>
+          </Route>
+          <Route path={"/orders"}
+                 element={<ProtectedRoute allowAuthenticated={true}>
+                     <Orders/>
                  </ProtectedRoute>}>
           </Route>
       </Routes>

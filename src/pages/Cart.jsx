@@ -81,18 +81,21 @@ function Cart() {
         }
     };
 
-    // Handle placing the order
     const handleOrder = async () => {
         try {
-            const response = await axiosInstance.post('/api/v1/orders', { cartItems });
-            if (response.data.success) {
-                // Handle successful order placement (e.g., redirect to order confirmation page)
-                console.log("Order placed successfully!");
+            const response = await request("POST", API_ROUTES.ORDERS.FROM_CART, null, user);
+            if (response.success) {
+                setCartItems([]);
+                setTotalPrice(0);
+                fetchCartQuantity();
+            } else {
+                console.error("Order failed:", response.error);
             }
         } catch (error) {
             console.error("Failed to place order:", error);
         }
     };
+
 
     return (
         <div className="container mx-auto p-6">

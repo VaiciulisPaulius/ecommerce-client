@@ -23,7 +23,7 @@ function UseApiClient(baseURL) {
                 const status = error.response.status;
 
                 if (status === 401) {
-                    setNewStatus("Session expired. Please login again.", "error");
+                    setNewStatus("Something went wrong.", "error");
                     setIsUnauthorized(true)
                 }
                 if(status === 403) {

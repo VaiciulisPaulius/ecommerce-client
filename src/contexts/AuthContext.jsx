@@ -33,7 +33,13 @@ export function AuthProvider({children}) {
         setLoading(false)
 
         console.log(JSON.parse(localStorage.getItem("user")))
+
     }, []);
+
+    const checkToken = async () => {
+        const req = await request("GET", API_ROUTES.AUTH.CHECK, null, user);
+        console.log(req)
+    }
 
     useEffect(() => {
         if(!isUnauthorized) return;

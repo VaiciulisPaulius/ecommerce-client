@@ -3,6 +3,7 @@ import { useParams } from 'react-router';
 import { API_ROUTES } from "/src/utils/apiRoutes/ApiRoutes.js"
 import {useJsonApi} from "../contexts/JsonApiContext.jsx";
 import {useAuth} from "../contexts/AuthContext.jsx";
+import {useCart} from "../contexts/CartContext.jsx";
 
 function ProductDetail() {
     const { id } = useParams();
@@ -10,6 +11,7 @@ function ProductDetail() {
     const { user } = useAuth();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
+    const { fetchCartQuantity } = useCart()
 
     const addToCart = async (productId, quantity) => {
         try {
@@ -20,6 +22,7 @@ function ProductDetail() {
 
             // Handle the response (if any) - for example, show a success message
             console.log('Product added to cart:', response);
+            fetchCartQuantity()
             return response;
         } catch (error) {
             console.error('Error adding product to cart:', error);

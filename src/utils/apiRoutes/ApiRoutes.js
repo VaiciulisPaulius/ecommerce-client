@@ -6,12 +6,14 @@ export const API_ROUTES = {
     API_IP: API_IP,
     AUTH: {
         LOGIN: `${API_BASE}/auth/authenticate`,
-        REGISTER: `${API_BASE}/auth/register`
+        REGISTER: `${API_BASE}/auth/register`,
+        CHECK: `${API_BASE}/auth/check-token`,
     },
     USERS: {
-        GET_ALL: `${API_BASE}/users`,
+        BASE: `${API_BASE}/auth/users`,
+        GET_ALL: `${API_BASE}/auth/users`,
         GET_ONE: (id) => `${API_BASE}/users/${id}`,
-        CREATE: `${API_BASE}/users`,
+        CREATE: `${API_BASE}/auth/users`,
         UPDATE: (id) => `${API_BASE}/users/${id}`,
         DELETE: (id) => `${API_BASE}/users/${id}`,
     },
@@ -20,7 +22,12 @@ export const API_ROUTES = {
         PRODUCTS: `${API_BASE}/cart-items/products`
     },
     PRODUCTS: {
+        BASE: `${API_BASE}/products`,
         GET_ALL: `${API_BASE}/products`,
         GET_ONE: id => `${API_BASE}/products/${id}`,
     },
+    ORDERS: {
+        BASE: `${API_BASE}/orders`,
+        FROM_CART: `${API_BASE}/orders/from-cart`
+    }
 };

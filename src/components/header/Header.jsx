@@ -25,6 +25,9 @@ function Header() {
                         <Link to={"/products?page=1"}>
                             <span className="hover:underline text-blue-500">Products</span>
                         </Link>
+                        <Link to={"/profile"}>
+                            <span className="hover:underline text-blue-500">Profile</span>
+                        </Link>
                         <Link to="/cart" className="flex items-center">
                             <span className="hover:underline text-blue-500">Cart</span>
                             {cartQuantity > 0 && (
@@ -32,6 +35,9 @@ function Header() {
                                     {cartQuantity}
                                 </span>
                             )}
+                        </Link>
+                        <Link to={"/orders"}>
+                            <span className="hover:underline text-blue-500">Orders</span>
                         </Link>
                         <a onClick={() => auth.logout()} href="#" className="hover:underline text-gray-700">Logout</a>
                     </>
