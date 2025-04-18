@@ -4,9 +4,11 @@ import ProductCard from "/src/components/ProductCard.jsx"; // You'll need to mak
 import { useProfile } from "/src/contexts/ProfileContext.jsx";
 import {useJsonApi} from "/src/contexts/JsonApiContext.jsx";
 import { API_ROUTES } from "/src/utils/apiRoutes/ApiRoutes.js";
+import {useAuth} from "../contexts/AuthContext.jsx";
 
 function ProductList() {
     const { request } = useJsonApi();
+    const { user } = useAuth();
     const { getAllProductFavourites } = useProfile(); // Optional: if you plan to support "favourites"
     const [products, setProducts] = useState([]);
 
@@ -33,7 +35,7 @@ function ProductList() {
 
     useEffect(() => {
         async function fetchProducts() {
-            const res = await request("GET", API_ROUTES.PRODUCTS.GET_ALL);
+            const res = await request("GET", API_ROUTES.PRODUCTS.GET_ALL, null, user);
             console.log(res)// crude fallback
 
             if (Array.isArray(res)) {
@@ -43,6 +45,7 @@ function ProductList() {
         }
 
         fetchProducts();
+        console.log(page)
     }, [page]);
 
     return (

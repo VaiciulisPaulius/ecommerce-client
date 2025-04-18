@@ -15,6 +15,10 @@ export const API_ROUTES = {
         UPDATE: (id) => `${API_BASE}/users/${id}`,
         DELETE: (id) => `${API_BASE}/users/${id}`,
     },
+    CART: {
+        BASE: `${API_BASE}/cart-items`,
+        PRODUCTS: `${API_BASE}/cart-items/products`
+    },
     PRODUCTS: {
         GET_ALL: `${API_BASE}/products`,
         GET_ONE: id => `${API_BASE}/products/${id}`,

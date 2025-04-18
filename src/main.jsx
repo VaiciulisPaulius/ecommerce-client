@@ -6,17 +6,20 @@ import {AuthProvider} from "/src/contexts/AuthContext.jsx";
 import {BrowserRouter} from "react-router";
 import {StatusProvider} from "/src/contexts/StatusProvider.jsx";
 import ProfileProvider from "/src/contexts/ProfileContext.jsx";
+import {CartProvider} from "./contexts/CartContext.jsx";
 
 createRoot(document.getElementById('root')).render(
     <BrowserRouter>
         <StatusProvider>
             <ApiProvider>
                 <AuthProvider>
-                    <ProfileProvider>
-                        <StrictMode>
-                            <App />
-                        </StrictMode>
-                    </ProfileProvider>
+                    <CartProvider>
+                        <ProfileProvider>
+                            <StrictMode>
+                                <App />
+                            </StrictMode>
+                        </ProfileProvider>
+                    </CartProvider>
                 </AuthProvider>
             </ApiProvider>
         </StatusProvider>

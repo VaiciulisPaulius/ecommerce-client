@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from "react-router";
-import {useAuth} from "../../contexts/AuthContext.jsx";
+import { useAuth } from "../../contexts/AuthContext.jsx";
+import {useJsonApi} from "../../contexts/JsonApiContext.jsx";
+import { API_ROUTES } from "../../utils/apiRoutes/ApiRoutes.js";
+import {useCart} from "../../contexts/CartContext.jsx";
 
 function Header() {
     const auth = useAuth();
+    const { request } = useJsonApi()
     const user = auth.user;
 
+    // Cart state to hold the total quantity
+    const { cartQuantity } = useCart();
 
     return (
         <div className="bg-gray-100 p-4 flex justify-between items-center">
@@ -16,8 +22,16 @@ function Header() {
                         <Link to={"/"}>
                             <span className="hover:underline text-blue-500">Home</span>
                         </Link>
-                        <Link to={"/products/1"}>
+                        <Link to={"/products?page=1"}>
                             <span className="hover:underline text-blue-500">Products</span>
+                        </Link>
+                        <Link to="/cart" className="flex items-center">
+                            <span className="hover:underline text-blue-500">Cart</span>
+                            {cartQuantity > 0 && (
+                                <span className="ml-2 bg-red-500 text-white rounded-full px-2 py-1 text-xs">
+                                    {cartQuantity}
+                                </span>
+                            )}
                         </Link>
                         <a onClick={() => auth.logout()} href="#" className="hover:underline text-gray-700">Logout</a>
                     </>

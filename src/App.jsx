@@ -6,6 +6,7 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import "/src/tailwindcss.css"
 import ProductList from "./pages/ProductList.jsx";
 import ProductDetail from "/src/pages/ProductDetail.jsx";
+import Cart from "./pages/Cart.jsx";
 
 function App() {
 
@@ -32,6 +33,11 @@ function App() {
           <Route path={"/products/:id"}
                  element={<ProtectedRoute allowAuthenticated={true}>
                      <ProductDetail/>
+                 </ProtectedRoute>}>
+          </Route>
+          <Route path={"/cart"}
+                 element={<ProtectedRoute allowAuthenticated={true}>
+                     <Cart/>
                  </ProtectedRoute>}>
           </Route>
       </Routes>

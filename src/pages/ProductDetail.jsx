@@ -11,10 +11,26 @@ function ProductDetail() {
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const addToCart = async (productId, quantity) => {
+        try {
+            const response = await request('POST', API_ROUTES.CART.BASE, {
+                productId,
+                quantity
+            }, user); // Pass token for authentication if needed
+
+            // Handle the response (if any) - for example, show a success message
+            console.log('Product added to cart:', response);
+            return response;
+        } catch (error) {
+            console.error('Error adding product to cart:', error);
+        }
+    }
+
     useEffect(() => {
         async function fetchProduct() {
             try {
                 const res = await request("GET", API_ROUTES.PRODUCTS.GET_ONE(id), null, user);
+                console.log(res)
                 setProduct(res);
             } catch (error) {
                 console.error('Failed to fetch product:', error);
@@ -50,7 +66,8 @@ function ProductDetail() {
                     </div>
                     <button
                         disabled={product.stock <= 0}
-                        className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+                        className="px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50 cursor-pointer"
+                        onClick={() => addToCart(product.id, 1)}
                     >
                         Add to Cart
                     </button>
