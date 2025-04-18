@@ -1,7 +1,7 @@
 import Login from "./pages/authentication/Login.jsx";
 import Register from "./pages/authentication/Register.jsx";
 import Header from "./components/header/Header.jsx";
-import {Routes, Route} from "react-router";
+import {Routes, Route, Navigate} from "react-router";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 import "/src/tailwindcss.css"
 import ProductList from "./pages/ProductList.jsx";
@@ -16,7 +16,9 @@ function App() {
     <>
       <Header></Header>
       <Routes>
-        <Route path={"/"}></Route>
+          <Route path="/"
+                 element={<Navigate to="/products" replace />} />
+
         <Route path={"/login"}
                element={<ProtectedRoute allowAuthenticated={false}>
                  <Login/>

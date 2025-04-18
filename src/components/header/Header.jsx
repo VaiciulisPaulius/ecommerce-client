@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from "react-router";
+import {Link, useNavigate} from "react-router";
 import { useAuth } from "../../contexts/AuthContext.jsx";
 import {useJsonApi} from "../../contexts/JsonApiContext.jsx";
 import { API_ROUTES } from "../../utils/apiRoutes/ApiRoutes.js";
@@ -9,19 +9,17 @@ function Header() {
     const auth = useAuth();
     const { request } = useJsonApi()
     const user = auth.user;
+    const navigate = useNavigate()
 
     // Cart state to hold the total quantity
     const { cartQuantity } = useCart();
 
     return (
         <div className="bg-gray-100 p-4 flex justify-between items-center">
-            <h2 className="text-xl font-bold">LTech - Internetinė technologijų parduotuvė</h2>
+            <h2 className="text-xl font-bold cursor-pointer" onClick={() => { navigate("/products")}}>LTech - Internetinė technologijų parduotuvė</h2>
             <nav className="flex space-x-4">
                 {user && (
                     <>
-                        <Link to={"/"}>
-                            <span className="hover:underline text-blue-500">Home</span>
-                        </Link>
                         <Link to={"/products?page=1"}>
                             <span className="hover:underline text-blue-500">Products</span>
                         </Link>

@@ -21,7 +21,7 @@ export function AuthProvider({children}) {
         localStorage.setItem("user", JSON.stringify(res.token));
 
         setNewStatus("Successfully logged in.", "success");
-        setUser(user)
+        setUser(res.token)
         setLoading(false);
     }
 
@@ -35,6 +35,10 @@ export function AuthProvider({children}) {
         console.log(JSON.parse(localStorage.getItem("user")))
 
     }, []);
+
+    useEffect(() => {
+        console.log(user)
+    }, [user])
 
     const checkToken = async () => {
         const req = await request("GET", API_ROUTES.AUTH.CHECK, null, user);

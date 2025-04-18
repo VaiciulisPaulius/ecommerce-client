@@ -13,7 +13,11 @@ function Login() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         console.log({ email, password })
+
         await login({ email, password });
+        setTimeout(() => {
+            navigate("/products")
+        }, 1000)
     };
 
     return (
@@ -24,14 +28,14 @@ function Login() {
                 {/* Username Input */}
                 <div className="mb-4">
                     <label htmlFor="email" className="block text-gray-700 text-sm font-semibold mb-1">
-                        Username
+                        Email
                     </label>
                     <input
                         type="text"
                         id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        placeholder="Enter your username"
+                        placeholder="Enter your Email"
                         className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
                     />
                 </div>

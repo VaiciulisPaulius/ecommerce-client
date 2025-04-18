@@ -12,7 +12,7 @@ function ProductCard({ product }) {
             <img
                 src={imageUrl}
                 alt={product.name}
-                className="w-full h-48 object-cover"
+                className="w-full h-48 object-cover cursor-pointer"
                 onClick={() => navigate("/products/" + product.id)}
             />
             <div className="p-4 flex flex-col gap-2">

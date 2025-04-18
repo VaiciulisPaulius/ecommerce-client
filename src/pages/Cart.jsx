@@ -86,8 +86,8 @@ function Cart() {
             const response = await request("POST", API_ROUTES.ORDERS.FROM_CART, null, user);
             if (response.success) {
                 setCartItems([]);
+                deleteAll()
                 setTotalPrice(0);
-                fetchCartQuantity();
             } else {
                 console.error("Order failed:", response.error);
             }
@@ -95,6 +95,13 @@ function Cart() {
             console.error("Failed to place order:", error);
         }
     };
+
+    const deleteAll = async () => {
+        for(let i = 0; i < cartItems.length; i++) {
+            await deleteItem(cartItems[i].product.id)
+        }
+        fetchCartQuantity();
+    }
 
 
     return (
@@ -110,7 +117,7 @@ function Cart() {
                         {cartItems.map(item => (
                             <div key={item.cartItem.cartId} className="flex items-center justify-between p-4 border-b">
                                 <img
-                                    src={API_ROUTES.API_IP + item.imageUrl || "https://via.placeholder.com/100x100?text=No+Image"}
+                                    src={API_ROUTES.API_IP + item.product.imageUrl || "https://via.placeholder.com/100x100?text=No+Image"}
                                     alt={item.name}
                                     className="w-24 h-24 object-cover"
                                 />
