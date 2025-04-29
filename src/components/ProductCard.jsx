@@ -3,7 +3,7 @@ import { API_ROUTES } from "../utils/apiRoutes/ApiRoutes.js";
 import {useNavigate} from "react-router";
 
 function ProductCard({ product }) {
-    const imageUrl = API_ROUTES.API_IP + product.imageUrl || "https://via.placeholder.com/300x200?text=No+Image";
+    const imageUrl = API_ROUTES.API_IP + "/uploads" + product.imageUrl || "https://via.placeholder.com/300x200?text=No+Image";
     const navigate = useNavigate();
 
 
@@ -23,7 +23,7 @@ function ProductCard({ product }) {
                 <div className="flex items-center justify-between mt-2">
                     <span className="text-lg font-bold text-green-600">${product.price.toFixed(2)}</span>
                     <span className={`text-sm ${product.stock > 0 ? "text-gray-600" : "text-red-500"}`}>
-                        {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
+                        {product.stock > 0 ? `${product.stock} sandelyje` : "Prekės nėra sandelyje"}
                     </span>
                 </div>
             </div>

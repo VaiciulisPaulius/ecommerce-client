@@ -1,0 +1,9 @@
+User-agent: *
+Disallow: /profile/
+Disallow: /cart/
+Disallow: /orders/
+Allow: /products/
+Allow: /login/
+Allow: /register/
+
+Sitemap: http://localhost:5173/sitemap.xml

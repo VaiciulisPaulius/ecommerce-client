@@ -9,6 +9,9 @@ import ProductDetail from "/src/pages/ProductDetail.jsx";
 import Cart from "./pages/Cart.jsx";
 import Profile from "./pages/Profile.jsx";
 import Orders from "./pages/Orders.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import Footer from "./components/Footer.jsx";
+import SiteMap from "./pages/SiteMap.jsx";
 
 function App() {
 
@@ -17,8 +20,9 @@ function App() {
       <Header></Header>
       <Routes>
           <Route path="/"
-                 element={<Navigate to="/products" replace />} />
-
+                 element={<HomePage/>} />
+          <Route path="/sitemap"
+                 element={<SiteMap/>} />
         <Route path={"/login"}
                element={<ProtectedRoute allowAuthenticated={false}>
                  <Login/>
@@ -35,9 +39,7 @@ function App() {
                  </ProtectedRoute>}>
           </Route>
           <Route path={"/products/:id"}
-                 element={<ProtectedRoute allowAuthenticated={true}>
-                     <ProductDetail/>
-                 </ProtectedRoute>}>
+                 element={<ProductDetail/>}>
           </Route>
           <Route path={"/cart"}
                  element={<ProtectedRoute allowAuthenticated={true}>
@@ -55,6 +57,7 @@ function App() {
                  </ProtectedRoute>}>
           </Route>
       </Routes>
+        <Footer/>
     </>
   )
 }

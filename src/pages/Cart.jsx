@@ -4,6 +4,7 @@ import { useAuth } from "/src/contexts/AuthContext.jsx";
 import {useJsonApi} from "../contexts/JsonApiContext.jsx";
 import { API_ROUTES } from "../utils/apiRoutes/ApiRoutes.js";
 import {useCart} from "../contexts/CartContext.jsx";
+import {Helmet} from "react-helmet";
 
 function Cart() {
     const auth = useAuth();
@@ -105,68 +106,74 @@ function Cart() {
 
 
     return (
-        <div className="container mx-auto p-6">
-            <h1 className="text-3xl font-semibold mb-6">Your Cart</h1>
+        <>
+            <Helmet>
+                <title>Krepšelis – LTech</title>
+                <meta name="description" content="Patikrinkite savo prekių krepšelį prieš pateikdami užsakymą. Greitas ir saugus apsipirkimas su LTech." />
+            </Helmet>
+            <div className="container mx-auto p-6 min-h-screen">
+                <h1 className="text-3xl font-semibold mb-6">Jūsų krepšelis</h1>
 
-            {cartItems.length === 0 ? (
-                <p>Your cart is empty.</p>
-            ) : (
-                <div>
-                    {/* Cart Items List */}
-                    <div className="space-y-4">
-                        {cartItems.map(item => (
-                            <div key={item.cartItem.cartId} className="flex items-center justify-between p-4 border-b">
-                                <img
-                                    src={API_ROUTES.API_IP + item.product.imageUrl || "https://via.placeholder.com/100x100?text=No+Image"}
-                                    alt={item.name}
-                                    className="w-24 h-24 object-cover"
-                                />
-                                <div className="flex-1 ml-4">
-                                    <h2 className="text-xl font-semibold">{item.product.name}</h2>
-                                    <p className="text-sm text-gray-600">Unit Price: ${parseInt(item.product.price).toFixed(2)}</p>
-                                </div>
+                {cartItems.length === 0 ? (
+                    <p>Krepšelis yra tūščias</p>
+                ) : (
+                    <div>
+                        {/* Cart Items List */}
+                        <div className="space-y-4">
+                            {cartItems.map(item => (
+                                <div key={item.cartItem.cartId} className="flex items-center justify-between p-4 border-b">
+                                    <img
+                                        src={API_ROUTES.API_IP + "/uploads" + item.product.imageUrl || "https://via.placeholder.com/100x100?text=No+Image"}
+                                        alt={item.name}
+                                        className="w-24 h-24 object-cover"
+                                    />
+                                    <div className="flex-1 ml-4">
+                                        <h2 className="text-xl font-semibold">{item.product.name}</h2>
+                                        <p className="text-sm text-gray-600">Vnt. Kaina: ${parseInt(item.product.price).toFixed(2)}</p>
+                                    </div>
 
-                                {/* Quantity Controls */}
-                                <div className="flex items-center space-x-2">
-                                    <button
-                                        className="px-2 py-1 bg-blue-500 text-white rounded"
-                                        onClick={() => updateQuantity(item.product.id, item.cartItem.cartId, parseInt(item.cartItem.quantity) - 1)}
-                                        disabled={item.cartItem.quantity <= 1}
-                                    >-</button>
-                                    <span>{item.cartItem.quantity}</span>
-                                    <button
-                                        className="px-2 py-1 bg-blue-500 text-white rounded"
-                                        onClick={() => updateQuantity(item.product.id, item.cartItem.cartId, parseInt(item.cartItem.quantity) + 1)}
-                                    >+</button>
-                                </div>
+                                    {/* Quantity Controls */}
+                                    <div className="flex items-center space-x-2 mx-2">
+                                        <button
+                                            className="px-2 py-1 bg-blue-500 text-white rounded"
+                                            onClick={() => updateQuantity(item.product.id, item.cartItem.cartId, parseInt(item.cartItem.quantity) - 1)}
+                                            disabled={item.cartItem.quantity <= 1}
+                                        >-</button>
+                                        <span>{item.cartItem.quantity}</span>
+                                        <button
+                                            className="px-2 py-1 bg-blue-500 text-white rounded"
+                                            onClick={() => updateQuantity(item.product.id, item.cartItem.cartId, parseInt(item.cartItem.quantity) + 1)}
+                                        >+</button>
+                                    </div>
 
-                                {/* Item Total */}
-                                <div className="flex items-center space-x-2">
-                                    <span className="font-bold text-lg">${(parseInt(item.cartItem.quantity) * parseInt(item.product.price)).toFixed(2)}</span>
-                                    <button
-                                        className="text-red-500 hover:underline"
-                                        onClick={() => deleteItem(item.product.id)}
-                                    >
-                                        Remove
-                                    </button>
+                                    {/* Item Total */}
+                                    <div className="flex items-center space-x-2">
+                                        <span className="font-bold text-lg">${(parseInt(item.cartItem.quantity) * parseInt(item.product.price)).toFixed(2)}</span>
+                                        <button
+                                            className="text-red-500 hover:underline"
+                                            onClick={() => deleteItem(item.product.id)}
+                                        >
+                                            Trinti
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
+
+                        {/* Cart Summary */}
+                        <div className="mt-6 flex justify-between items-center">
+                            <h2 className="text-xl font-semibold">Galutinė kaina: ${totalPrice.toFixed(2)}</h2>
+                            <button
+                                className="bg-green-500 text-white px-6 py-2 rounded"
+                                onClick={handleOrder}
+                            >
+                                Vykdyti užsakymą
+                            </button>
+                        </div>
                     </div>
-
-                    {/* Cart Summary */}
-                    <div className="mt-6 flex justify-between items-center">
-                        <h2 className="text-xl font-semibold">Total Price: ${totalPrice.toFixed(2)}</h2>
-                        <button
-                            className="bg-green-500 text-white px-6 py-2 rounded"
-                            onClick={handleOrder}
-                        >
-                            Place Order
-                        </button>
-                    </div>
-                </div>
-            )}
-        </div>
+                )}
+            </div>
+        </>
     );
 }
 

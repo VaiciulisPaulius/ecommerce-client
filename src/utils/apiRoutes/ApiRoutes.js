@@ -1,5 +1,5 @@
-const API_BASE = "http://192.168.1.234:7175/api/v1";
-const API_IP = "http://192.168.1.234:7175";
+const API_BASE = "https://192.168.1.234:8443/api/v1";
+const API_IP = "https://192.168.1.234:8443";
 
 export const API_ROUTES = {
     BASE_URL: API_BASE,
